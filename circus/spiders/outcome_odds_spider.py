@@ -15,6 +15,7 @@ class OutcomeOddsSpider(scrapy.Spider):
             }
         )
 
+
     def parse(self, response):
         # from scrapy.shell import inspect_response
         # inspect_response(response, self)
@@ -24,3 +25,6 @@ class OutcomeOddsSpider(scrapy.Spider):
         yield {
             'title': title
         }
+
+
+    def parse
