@@ -7,12 +7,13 @@ from circus.items import OddItem, MatchItem
 
 class OutcomeOddsSpider(scrapy.Spider):
     name = 'outcome_odds'
+    home_url = 'https://www.circus.be/en/sport/sports-bets/844/227875758'
     event_url = 'https://www.circus.be/en/sport/event/844/65587/227875758/{}'
     splash_args = { 'wait': 25 }
 
     def start_requests(self):
         yield SplashRequest(
-            url='https://www.circus.be/en/sport/sports-bets/844/227875758',
+            url=self.home_url,
             callback=self.parse,
             args=self.splash_args
         )
