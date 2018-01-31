@@ -34,7 +34,8 @@ DATABASE = {
 
 #pipelines
 ITEM_PIPELINES = {
-    'circus.pipelines.CircusPipeline': 300
+    'circus.pipelines.CircusPipeline': 300,
+    'circus.pipelines.ReportPipeline': 400
 }
 
 

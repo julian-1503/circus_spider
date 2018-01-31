@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 from scrapy import signals
 
@@ -94,3 +95,24 @@ class CircusPipeline(object):
             raise
 
         return item
+
+class ReportPipeline(object):
+    def __init__(self, stats):
+        self.stats = stats
+
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        pipeline = cls(crawler.stats)
+        crawler.signals.connect(pipeline.spider_closed, signals.spider_closed)
+        return pipeline
+
+
+    def spider_closed(self, spider):
+        start_time = self.stats.get_stats(spider)['start_time']
+        end_time = self.stats.get_stats(spider)['finish_time']
+
+        logger.info(
+            "Spider running time was: {}".format(end_time - start_time)
+        )
+
