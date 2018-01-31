@@ -20,8 +20,6 @@ class OutcomeOddsSpider(scrapy.Spider):
 
 
     def parse(self, response):
-        # from scrapy.shell import inspect_response
-        # inspect_response(response, self)
         for next_page in response.xpath("//div[starts-with(@id,'EventId_')]/@id").extract():
             event_id = next_page.replace('EventId_', '')
 
@@ -30,7 +28,6 @@ class OutcomeOddsSpider(scrapy.Spider):
                 callback=self.parse_match,
                 args=self.splash_args
             )
-
 
 
     def parse_match(self, response):
