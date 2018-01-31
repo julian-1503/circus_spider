@@ -28,6 +28,14 @@ ROBOTSTXT_OBEY = False
 
 # database settings
 DATABASE = {
-    'driver': 'sqlite',
+    'drivername': 'sqlite',
     'database': 'circus.sqlite'
 }
+
+#pipelines
+ITEM_PIPELINES = {
+    'circus.pipelines.CircusPipeline': 300
+}
+
+
+DOWNLOAD_TIMEOUT = 40
