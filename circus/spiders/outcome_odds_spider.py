@@ -31,9 +31,6 @@ class OutcomeOddsSpider(scrapy.Spider):
 
 
     def parse_match(self, response):
-        # from scrapy.shell import inspect_response
-        # inspect_response(response, self)
-
         match_name = response.xpath("//div[contains(@class,'event__name')]"
                                     "/span/text()").extract_first()
 
@@ -45,3 +42,14 @@ class OutcomeOddsSpider(scrapy.Spider):
 
         if match_name is not None:
             yield MatchItem(match_name=match_name, match_date=match_date)
+
+        for outcome_item in response.xpath("//div[contains(@class,"
+                                           "'outcome-item')]"):
+            odd_name = outcome_item.xpath("//div[contains(@class, 'OutcomeName')]"
+                                          "/span/text()").extract_first()
+            odd_value = outcome_item.xpath("//div[contains(@class, 'OutcomeOdd')]"
+                                           "/div[1]/span/text()").extract_first()
+
+            if odd_name is not None and odd_name is not None:
+                yield OddItem(odd_name=odd_name, odd_value=odd_value,
+                      match_name=match_name)
