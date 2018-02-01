@@ -9,7 +9,7 @@ class OutcomeOddsSpider(scrapy.Spider):
     name = 'outcome_odds'
     home_url = 'https://www.circus.be/en/sport/sports-bets/844/227875758'
     event_url = 'https://www.circus.be/en/sport/event/844/65587/227875758/{}'
-    splash_args = { 'wait': 25 }
+    splash_args = { 'wait': 40, 'timeout': 300 }
 
     def start_requests(self):
         yield SplashRequest(
@@ -43,13 +43,11 @@ class OutcomeOddsSpider(scrapy.Spider):
         if match_name is not None:
             yield MatchItem(match_name=match_name, match_date=match_date)
 
-        for outcome_item in response.xpath("//div[contains(@class,"
-                                           "'outcome-item')]"):
-            odd_name = outcome_item.xpath("//div[contains(@class, 'OutcomeName')]"
-                                          "/span/text()").extract_first()
-            odd_value = outcome_item.xpath("//div[contains(@class, 'OutcomeOdd')]"
-                                           "/div[1]/span/text()").extract_first()
+            odd_names = response.xpath("//div[contains(@class, 'OutcomeName')]"
+                                          "/span/text()").extract()
+            odd_values = response.xpath("//div[contains(@class, 'OutcomeOdd')]"
+                                           "/div[1]/span/text()").extract()
 
-            if odd_name is not None and odd_name is not None:
+            for odd_name, odd_value in zip(odd_names, odd_values):
                 yield OddItem(odd_name=odd_name, odd_value=odd_value,
                       match_name=match_name)
